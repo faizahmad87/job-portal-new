@@ -1,5 +1,3 @@
-// src/components/NewAssessmentModal.js
-
 import React, {useState} from 'react';
 import {Modal, Box, Typography, TextField, Button} from '@mui/material';
 import apiCall from '../utils/api';
@@ -10,7 +8,6 @@ const NewAssessmentModal = ({open, onClose, onSubmit}) => {
  const handleSubmit = () => {
   if (name) {
    CreateAssessment(name);
-   onSubmit(name);
    setName('');
   }
  };
@@ -20,7 +17,8 @@ const NewAssessmentModal = ({open, onClose, onSubmit}) => {
    assessmentName: name
   });
   console.log(response);
-  onSubmit(name);
+  onSubmit();
+  onClose();
  };
 
  return (
@@ -28,13 +26,20 @@ const NewAssessmentModal = ({open, onClose, onSubmit}) => {
    <Box
     sx={{
      padding: 3,
-     background: 'white',
-     width: 400,
+     backgroundColor: 'white',
+     borderRadius: 2,
      margin: 'auto',
-     marginTop: '10%'
+     width: {xs: '80%', sm: 400}, // 80% width for mobile, 400px for larger screens
+     maxWidth: 600, // max width for larger screens
+     mt: {xs: '20%', sm: 5}, // Center vertically on mobile, 5 for larger screens
+     display: 'flex',
+     flexDirection: 'column',
+     alignItems: 'center'
     }}
    >
-    <Typography variant="h6">Create New Assessment</Typography>
+    <Typography variant="h6" align="center">
+     Create New Assessment
+    </Typography>
     <TextField
      label="Assessment Name"
      fullWidth
@@ -42,7 +47,12 @@ const NewAssessmentModal = ({open, onClose, onSubmit}) => {
      onChange={e => setName(e.target.value)}
      margin="normal"
     />
-    <Button variant="contained" color="primary" onClick={handleSubmit}>
+    <Button
+     variant="contained"
+     color="primary"
+     onClick={handleSubmit}
+     sx={{mt: 2}}
+    >
      Submit
     </Button>
    </Box>

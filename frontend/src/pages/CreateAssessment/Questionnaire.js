@@ -1,7 +1,14 @@
 // src/pages/CreateAssessment/Questionnaire.js
 
 import React, {useEffect, useState} from 'react';
-import {Box, Typography, Select, MenuItem, Button} from '@mui/material';
+import {
+ Box,
+ Typography,
+ Select,
+ MenuItem,
+ Button,
+ TextField
+} from '@mui/material';
 import QuestionForm from './QuestionForm';
 import {useParams, useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
@@ -13,12 +20,15 @@ const Questionnaire = () => {
  const [jobs, setJobs] = useState([]);
  const [assessment, setAssessment] = useState({});
  const [assessmentJob, setAssessmentJob] = useState('');
+ const [jobID, setJobID] = useState('');
+ const [selectedJob, setSelectedJob] = useState('');
 
  const fetchAssessment = async () => {
   const response = await apiCall('get', `/assessments/${assessmentId}`, {});
   console.log(response);
   setAssessment(response);
-  setAssessmentJob(response.job.jobTitle);
+  setAssessmentJob(response.job?.jobTitle);
+  setSelectedJob(response.job?.jobTitle);
  };
 
  useEffect(() => {
@@ -44,32 +54,39 @@ const Questionnaire = () => {
  };
 
  const handleJobSelect = jobId => {
-  const questions = [];
+  const questions = assessment?.questions || [];
   updateAssessment(jobId, questions);
+  const result = jobs.find(item => item.job._id === jobId);
+  setSelectedJob(result?.job.title);
+  console.log(result?.job.title);
  };
 
  const handleSaveAssessment = () => {
   navigate('/create-assessment');
  };
 
+ const handleStatusChange = value => {};
+
  return (
   <Box sx={{padding: 3}}>
    <Typography variant="h4">
     Edit Assessment: {assessment.assessmentName}
    </Typography>
-   <Typography>Select Job for Assessment</Typography>
-   <Select
-    value={assessmentJob}
-    onChange={e => handleJobSelect(e.target.value)}
-    fullWidth
-    sx={{marginBottom: 2}}
-   >
-    {jobs.map(job => (
-     <MenuItem key={job._id} value={job._id}>
-      {job.title}
-     </MenuItem>
-    ))}
-   </Select>
+   <Box mt={4} sx={{mb: 2}}>
+    <TextField
+     select
+     label="Select Job for Assessment"
+     value={selectedJob}
+     onChange={e => handleJobSelect(e.target.value)}
+     fullWidth
+    >
+     {jobs.map(job => (
+      <MenuItem key={job.job._id} value={job.job._id}>
+       {job.job.title}
+      </MenuItem>
+     ))}
+    </TextField>
+   </Box>
 
    <Box>
     <Typography variant="h6">Questions</Typography>
@@ -84,7 +101,7 @@ const Questionnaire = () => {
       {q.options?.map((opt, index) => {
        return (
         <>
-         <div style={{marginLeft: '12px'}}>
+         <div style={{marginLeft: '12px'}} key={index}>
           {index + 1}:{opt}
          </div>
         </>
@@ -118,7 +135,7 @@ const Questionnaire = () => {
         options: question.options.map(item => item.text)
        }
       ];
-      updateAssessment('672f465292385e65093c7cf5', currentQuestion);
+      updateAssessment(jobID, currentQuestion);
      }}
     />
    </Box>

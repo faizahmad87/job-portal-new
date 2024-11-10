@@ -1,6 +1,6 @@
 // src/pages/Dashboard/CandidateList.js
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {
  Box,
@@ -10,49 +10,50 @@ import {
  ListItemText,
  Button
 } from '@mui/material';
-
-const mockCandidates = [
- {
-  id: 1,
-  name: 'John Doe',
-  resumeLink: '#',
-  applicationDate: '2024-01-12',
-  status: 'Under Review'
- },
- {
-  id: 2,
-  name: 'Jane Smith',
-  resumeLink: '#',
-  applicationDate: '2024-01-15',
-  status: 'Interview Scheduled'
- }
-];
+import {useSelector} from 'react-redux';
 
 const CandidateList = () => {
  const location = useLocation();
  const job = location.state?.job;
  const navigate = useNavigate();
+ const candidateDetails = useSelector(state => state.candidateDetails); // Access state from Redux
+
+ useEffect(() => {
+  console.log(candidateDetails);
+ }, []);
 
  const handleCandidateClick = candidate => {
-  navigate(`/dashboard/job/${job.id}/candidate/${candidate.id}`, {
+  navigate(`/dashboard/job/${job.job._id}/candidate`, {
    state: {candidate}
   });
+ };
+
+ const handleResumePreview = candidate => {
+  const link = candidate.resume;
+  window.open(link, '_blank'); // Opens the link in a new tab
  };
 
  return (
   <Box>
    <Typography variant="h4" gutterBottom>
-    Candidates for {job?.title}
+    Candidates for {job.job?.title}
    </Typography>
    <List>
-    {mockCandidates.map(candidate => (
+    {candidateDetails.map(candidate => (
      <ListItem key={candidate.id}>
       <ListItemText
-       primary={candidate.name}
-       secondary={`Applied on: ${candidate.applicationDate} - Status: ${candidate.status}`}
+       primary={
+        <span
+         onClick={() => handleCandidateClick(candidate)}
+         style={{cursor: 'pointer'}}
+        >
+         {candidate.name}
+        </span>
+       }
+       secondary={`Applied on: ${candidate?.appliedDate} - Status: ${candidate.status}`}
       />
-      <Button onClick={() => handleCandidateClick(candidate)} color="primary">
-       View Details
+      <Button onClick={() => handleResumePreview(candidate)} color="primary">
+       Resume Link
       </Button>
      </ListItem>
     ))}

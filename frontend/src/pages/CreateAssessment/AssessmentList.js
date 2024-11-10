@@ -12,11 +12,8 @@ const AssessmentList = () => {
  const [showModal, setShowModal] = useState(false);
  const navigate = useNavigate();
 
- const handleCreateAssessment = name => {
-  const newAssessment = {id: Date.now(), name, job: '', questions: []};
-  setAssessments([...assessments, newAssessment]);
-  setShowModal(false);
-  navigate(`/create-assessment/${newAssessment.id}/questionnaire`);
+ const handleCreateAssessment = () => {
+  getAssessments();
  };
 
  const getAssessments = async () => {
@@ -31,31 +28,28 @@ const AssessmentList = () => {
  return (
   <Box sx={{padding: 3}}>
    <Typography variant="h4">Assessments</Typography>
+   <Box textAlign="center" mt={4}>
+    <Button
+     variant="contained"
+     color="primary"
+     onClick={() => setShowModal(true)}
+    >
+     Create New Assessment
+    </Button>
+   </Box>
 
-   {assessments.length === 0 ? (
-    <Box textAlign="center" mt={4}>
-     <Button
-      variant="contained"
-      color="primary"
-      onClick={() => setShowModal(true)}
-     >
-      Create New Assessment
-     </Button>
-    </Box>
-   ) : (
-    <Grid container spacing={2} mt={2}>
-     {assessments.map(assessment => (
-      <Grid item xs={12} sm={6} md={4} key={assessment._id}>
-       <AssessmentCard
-        assessment={assessment}
-        onClick={() =>
-         navigate(`/create-assessment/${assessment._id}/questionnaire`)
-        }
-       />
-      </Grid>
-     ))}
-    </Grid>
-   )}
+   <Grid container spacing={2} mt={2}>
+    {assessments.map(assessment => (
+     <Grid item xs={12} sm={6} md={4} key={assessment._id}>
+      <AssessmentCard
+       assessment={assessment}
+       onClick={() =>
+        navigate(`/create-assessment/${assessment._id}/questionnaire`)
+       }
+      />
+     </Grid>
+    ))}
+   </Grid>
 
    <NewAssessmentModal
     open={showModal}

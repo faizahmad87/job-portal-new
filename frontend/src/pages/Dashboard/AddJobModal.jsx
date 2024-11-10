@@ -29,8 +29,7 @@ const AddJobModal = ({open, onClose, job, fetchJobs}) => {
  };
 
  useEffect(() => {
-  console.log(job);
-  if (job) {
+  if (JSON.stringify(job) !== '{}') {
    setValue('title', job.title);
    setValue('description', job.description);
   } else {
@@ -40,14 +39,11 @@ const AddJobModal = ({open, onClose, job, fetchJobs}) => {
  }, [job]);
 
  const handleSubmit2 = async data => {
-  console.log(data);
-  if (job) {
+  if (JSON.stringify(job) !== '{}') {
    // Update existing job (API call)
-   // PUT /jobs/:id
    editJob(data.title, data.description);
   } else {
    // Add new job (API call)
-   // POST /jobs
    createJob(data.title, data.description);
   }
   onClose();
@@ -62,23 +58,25 @@ const AddJobModal = ({open, onClose, job, fetchJobs}) => {
      backgroundColor: 'white',
      borderRadius: 2,
      margin: 'auto',
-     width: 400,
-     mt: 5
+     width: {xs: '80%', sm: 400}, // 80% width for mobile, 400px for larger screens
+     maxWidth: 600, // max width for larger screens
+     mt: {xs: '20%', sm: 5}, // Center vertically on mobile, 5 for larger screens
+     display: 'flex',
+     flexDirection: 'column',
+     alignItems: 'center'
     }}
    >
     <h2>{job ? 'Edit Job' : 'Add New Job'}</h2>
-    <form onSubmit={handleSubmit(handleSubmit2)}>
+    <form onSubmit={handleSubmit(handleSubmit2)} style={{width: '100%'}}>
      <TextField
       label="Job Title"
       fullWidth
-      //value={title}
       {...register('title', {required: true})}
       margin="normal"
      />
      <TextField
       label="Job Description"
       fullWidth
-      //value={description}
       {...register('description', {required: true})}
       margin="normal"
      />

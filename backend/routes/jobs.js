@@ -1,23 +1,22 @@
 const express = require('express');
 const Job = require('../models/Job');
+const Candidate = require('../models/Candidate');
 const router = express.Router();
 
 // POST /jobs
 router.post('/jobs', async (req, res) => {
  const {title, description} = req.body;
+ console.log(title, description);
 
  // Validate the input
  if (!title || !description) {
   return res.status(400).json({error: 'Title and description are required'});
  }
-
  try {
   // Create a new job instance
   const newJob = new Job({
-   title,
-   description,
-   applicantsCount: 0, // Initially, no applicants
-   candidates: [] // Initially, no candidates
+   title: title,
+   description: description
   });
 
   // Save the job to the database
@@ -26,15 +25,31 @@ router.post('/jobs', async (req, res) => {
   // Send the created job back in the response
   res.status(201).json(newJob);
  } catch (error) {
-  res.status(500).json({error: 'Error creating the job'});
+  res
+   .status(500)
+   .json({error: 'Error creating the job', message: error.message});
  }
 });
 
 // GET /jobs
 router.get('/jobs', async (req, res) => {
+ const limit = Math.floor(Math.random() * 10) + 1;
+ const candidates = await Candidate.find().limit(limit); // Adjust the limit as needed
  try {
   const jobs = await Job.find(); // This will retrieve all jobs from the database
-  res.status(200).json(jobs); // Send the jobs data back to the client
+  let jobDetails = [];
+  for (let i = 0; i < jobs.length; i++) {
+   const limit = Math.floor(Math.random() * 10) + 1;
+   const candidates = await Candidate.find().limit(limit); // Adjust the limit as needed
+   jobDetails = [
+    ...jobDetails,
+    {
+     job: jobs[i],
+     candidates: candidates
+    }
+   ];
+  }
+  res.status(200).json(jobDetails); // Send the jobs data back to the client
  } catch (error) {
   res.status(500).json({error: 'Error fetching jobs'});
  }
@@ -52,7 +67,6 @@ router.get('/jobs/:id', async (req, res) => {
 // PUT /jobs/:id
 router.put('/jobs/:id', async (req, res) => {
  const {title, description} = req.body;
-
  // Validate the input
  if (!title || !description) {
   return res.status(400).json({error: 'Title and description are required'});
@@ -62,7 +76,10 @@ router.put('/jobs/:id', async (req, res) => {
   // Find the job by ID and update the fields
   const updatedJob = await Job.findByIdAndUpdate(
    req.params.id,
-   {title, description},
+   {
+    title,
+    description
+   },
    {new: true} // This option ensures that the updated job is returned
   );
 

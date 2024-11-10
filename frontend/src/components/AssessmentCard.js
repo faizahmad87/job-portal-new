@@ -9,7 +9,7 @@ const AssessmentCard = ({assessment, onClick}) => {
    <CardContent>
     <Typography variant="h6">{assessment.assessmentName}</Typography>
     <Typography variant="subtitle1">
-     Job: {assessment?.job.jobTitle || 'Not Assigned'}
+     Job: {assessment?.job?.jobTitle || 'Not Assigned'}
     </Typography>
     <Typography>Questions: {assessment?.questions.length}</Typography>
    </CardContent>
