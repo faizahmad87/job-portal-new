@@ -6,3 +6,9 @@ export const setCandidateDetails = candidates => {
   payload: candidates // The new array to set
  };
 };
+
+export const setToggleFetchAssessment = () => {
+ return {
+  type: 'TOGGLE_FETCH_ASSESSMENT'
+ };
+};

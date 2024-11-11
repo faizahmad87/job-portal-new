@@ -1,16 +1,26 @@
-// src/pages/CreateAssessment/QuestionForm.js
-
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Box, TextField, Button, Typography, IconButton} from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import {useForm} from 'react-hook-form';
 
-const QuestionForm = ({onAdd}) => {
+const QuestionForm = ({onAdd, editingQuestion, onEdit}) => {
  const [questionText, setQuestionText] = useState('');
  const [correctOption, setCorrectOption] = useState('');
  const [options, setOptions] = useState([{id: 1, text: '', isCorrect: false}]);
- const {register, handleSubmit, setValue} = useForm();
+
+ useEffect(() => {
+  if (editingQuestion) {
+   setQuestionText(editingQuestion.question);
+   setCorrectOption(editingQuestion.correctAnswer);
+   setOptions(
+    editingQuestion.options.map((opt, index) => ({
+     id: index + 1,
+     text: opt,
+     isCorrect: opt === editingQuestion.correctAnswer
+    }))
+   );
+  }
+ }, [editingQuestion]);
 
  const handleAddOption = () => {
   setOptions([
@@ -33,9 +43,14 @@ const QuestionForm = ({onAdd}) => {
   setOptions(options.map(option => ({...option, isCorrect: option.id === id})));
  };
 
- const handleAddQuestion = () => {
+ const handleSubmit = () => {
   if (questionText && options.some(option => option.text) && correctOption) {
-   onAdd({text: questionText, options, correctOption});
+   const questionData = {question: questionText, options, correctOption};
+   if (editingQuestion) {
+    onEdit(questionData); // Call the edit callback
+   } else {
+    onAdd(questionData); // Call the add callback
+   }
    setQuestionText('');
    setOptions([{id: 1, text: '', isCorrect: false}]);
    setCorrectOption('');
@@ -51,7 +66,9 @@ const QuestionForm = ({onAdd}) => {
     borderRadius: '5px'
    }}
   >
-   <Typography variant="h6">Add New Question</Typography>
+   <Typography variant="h6">
+    {editingQuestion ? 'Edit Question' : 'Add New Question'}
+   </Typography>
    <TextField
     label="Question Text"
     fullWidth
@@ -59,7 +76,6 @@ const QuestionForm = ({onAdd}) => {
     value={questionText}
     onChange={e => setQuestionText(e.target.value)}
    />
-
    <Typography variant="subtitle1" sx={{marginTop: 2}}>
     Options
    </Typography>
@@ -88,7 +104,6 @@ const QuestionForm = ({onAdd}) => {
      </IconButton>
     </Box>
    ))}
-
    <Button
     variant="outlined"
     color="primary"
@@ -97,25 +112,22 @@ const QuestionForm = ({onAdd}) => {
    >
     Add Option
    </Button>
-   <Typography variant="h6">Correct Option</Typography>
+   <Typography variant="h6" sx={{marginTop: 2}}>
+    Correct Option
+   </Typography>
    <TextField
-    label="Correct Option Text"
+    label="Correct Option"
     fullWidth
-    margin="normal"
     value={correctOption}
     onChange={e => setCorrectOption(e.target.value)}
    />
-
    <Button
     variant="contained"
     color="primary"
-    onClick={handleAddQuestion}
-    sx={{marginTop: 3}}
-    disabled={
-     !questionText || !correctOption || !options.some(option => option.text)
-    }
+    onClick={handleSubmit}
+    sx={{marginTop: 2}}
    >
-    Add Question
+    {editingQuestion ? 'Save Changes' : 'Add Question'}
    </Button>
   </Box>
  );

@@ -1,0 +1,61 @@
+/* Basic styling for the sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding-top: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebar-link {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 15px 20px;
+}
+
+.sidebar-link:hover {
+  background-color: #444;
+}
+
+/* Hide sidebar by default on mobile */
+.sidebar {
+  transform: translateX(-100%);
+}
+
+/* Show sidebar on larger screens */
+@media (min-width: 768px) {
+  .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-toggle-btn {
+    display: none; /* Hide toggle button on larger screens */
+  }
+}
+
+/* When sidebar is open on mobile, slide it in */
+.sidebar.open {
+  transform: translateX(0);
+}
+
+/* Toggle button for mobile */
+.sidebar-toggle-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure button stays above other elements */
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: #444;
+}

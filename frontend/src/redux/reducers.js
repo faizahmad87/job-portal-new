@@ -1,7 +1,8 @@
 // src/redux/reducer.js
 
 const initialState = {
- candidateDetails: [] // Initially empty array
+ candidateDetails: [], // Initially empty array
+ toggleFetchAssessment: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,6 +11,11 @@ const reducer = (state = initialState, action) => {
    return {
     ...state,
     candidateDetails: action.payload // Assign the array to the candidateDetails state
+   };
+  case 'TOGGLE_FETCH_ASSESSMENT':
+   return {
+    ...state,
+    toggleFetchAssessment: !state.toggleFetchAssessment // Toggle the fetch assessment state
    };
   default:
    return state;
