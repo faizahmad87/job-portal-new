@@ -10,7 +10,7 @@ const app = express();
 
 app.use(
  cors({
-  origin: [""],
+  origin: ["https://job-portal-6vzx.vercel.app"],
   methods: ['POST', 'GET'],
   credentials: true
  })
