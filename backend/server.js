@@ -7,7 +7,7 @@ const assessmentRoutes = require('./routes/assessment');
 require('dotenv').config();
 
 const app = express();
-
+//dealing with cors errors
 app.use(
  cors({
   origin: ["https://job-portal-6vzx.vercel.app"],
@@ -15,6 +15,8 @@ app.use(
   credentials: true
  })
 );
+
+
 
 // Connect to database
 connectDB();
