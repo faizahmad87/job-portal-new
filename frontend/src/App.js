@@ -30,7 +30,7 @@ function App() {
      component="main"
      //sx={{padding: 3}}
      sx={{
-      marginTop: {xs: '48px', sm: '0px'}, // 56px margin-top for mobile screens
+      marginTop: {xs: '48px', sm: '12px'}, // 56px margin-top for mobile screens
       padding: 3,
       flexGrow: 1
      }}

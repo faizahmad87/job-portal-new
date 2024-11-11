@@ -33,11 +33,12 @@ const JobListings = () => {
 
  const handleEditJob = job => {
   setModalOpen(true);
-  setSelectedjob(job);
+  setSelectedjob(job.job);
   // Add logic to populate form with job data in the modal
  };
 
  const handleDeleteJob = jobId => {
+  console.log(jobId);
   deleteJob(jobId);
  };
 
@@ -58,6 +59,8 @@ const JobListings = () => {
  };
 
  const deleteJob = async jobId => {
+  console.log(jobId);
+
   await apiCall('delete', `/jobs/${jobId}`, {});
   fetchJobs();
  };
@@ -122,7 +125,7 @@ const JobListings = () => {
        <Button
         size="small"
         color="error"
-        onClick={() => handleDeleteJob(job._id)}
+        onClick={() => handleDeleteJob(job.job._id)}
        >
         Delete
        </Button>

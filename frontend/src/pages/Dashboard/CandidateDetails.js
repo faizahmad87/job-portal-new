@@ -1,16 +1,20 @@
 // src/pages/Dashboard/CandidateDetails.js
 
 import React, {useEffect, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {Box, Typography, Button, TextField, MenuItem} from '@mui/material';
+import {IconButton} from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import apiCall from '../../utils/api';
 
 const CandidateDetails = () => {
  const location = useLocation();
  const candidate = location.state?.candidate;
  const [status, setStatus] = useState(candidate?.status || 'Under Review');
-
+ const navigate = useNavigate();
  const handleStatusChange = event => {
   setStatus(event.target.value);
+  console.log(event.target.value);
  };
 
  const handleButtonClick = () => {
@@ -25,9 +29,13 @@ const CandidateDetails = () => {
 
  return (
   <Box>
-   <Typography variant="h4" gutterBottom>
-    Candidate Details: {candidate?.name}
-   </Typography>
+   <Box sx={{display: 'flex', alignItems: 'left', padding: 0}}>
+    <IconButton onClick={() => navigate(-1)} aria-label="back">
+     <ArrowBackIcon />
+    </IconButton>
+    <Typography variant="h4">Candidate Details: {candidate?.name}</Typography>
+   </Box>
+
    <Typography variant="body1">Email: {candidate?.email}</Typography>
    <Typography variant="body1">
     Contact: {candidate?.contact_details}

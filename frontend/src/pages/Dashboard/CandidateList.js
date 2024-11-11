@@ -10,6 +10,8 @@ import {
  ListItemText,
  Button
 } from '@mui/material';
+import {IconButton} from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {useSelector} from 'react-redux';
 
 const CandidateList = () => {
@@ -35,9 +37,13 @@ const CandidateList = () => {
 
  return (
   <Box>
-   <Typography variant="h4" gutterBottom>
-    Candidates for {job.job?.title}
-   </Typography>
+   <Box sx={{display: 'flex', alignItems: 'left', padding: 0}}>
+    <IconButton onClick={() => navigate(-1)} aria-label="back">
+     <ArrowBackIcon />
+    </IconButton>
+    <Typography variant="h4">Candidates for {job.job?.title}</Typography>
+   </Box>
+
    <List>
     {candidateDetails.map(candidate => (
      <ListItem key={candidate.id}>

@@ -9,18 +9,11 @@ import {
  FormControl,
  InputLabel
 } from '@mui/material';
+import {IconButton} from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import QuestionForm from './QuestionForm';
 import {useParams, useNavigate} from 'react-router-dom';
 import apiCall from '../../utils/api';
-
-const mockJobTitles = [
- 'Software Engineer',
- 'Product Manager',
- 'Data Scientist',
- 'UI/UX Designer',
- 'Frontend Developer',
- 'Backend Developer'
-];
 
 const Questionnaire = () => {
  const {assessmentId} = useParams();
@@ -68,13 +61,6 @@ const Questionnaire = () => {
   setJobs(response);
  };
 
- //  const handleJobSelect = jobId => {
- //   const questions = assessment?.questions || [];
- //   updateAssessment(jobId, questions);
- //   const result = jobs.find(item => item.job._id === jobId);
- //   setSelectedJob(result?.job.title);
- //  };
-
  const handleSaveAssessment = () => {
   navigate('/create-assessment');
  };
@@ -82,11 +68,6 @@ const Questionnaire = () => {
  const handleEditQuestion = (question, index) => {
   setEditOpen(!editOpen);
   setEditingQuestionIndex(index); // Set the index of the question to be edited
- };
-
- const handleDeleteQuestion = index => {
-  const updatedQuestions = assessment?.questions.filter((_, i) => i !== index);
-  updateAssessment(jobID, updatedQuestions);
  };
 
  const handleChange = event => {
@@ -100,9 +81,17 @@ const Questionnaire = () => {
 
  return (
   <Box sx={{padding: 3}}>
-   <Typography variant="h4">
+   <Box sx={{display: 'flex', alignItems: 'left', padding: 0}}>
+    <IconButton onClick={() => navigate(-1)} aria-label="back">
+     <ArrowBackIcon />
+    </IconButton>
+    <Typography variant="h4" sx={{marginLeft: 1}}>
+     Edit Assessment: {assessment.assessmentName}
+    </Typography>
+   </Box>
+   {/* <Typography variant="h4">
     Edit Assessment: {assessment.assessmentName}
-   </Typography>
+   </Typography> */}
    <Typography variant="h7">
     selectedJob: {assessment?.job?.jobTitle}
    </Typography>

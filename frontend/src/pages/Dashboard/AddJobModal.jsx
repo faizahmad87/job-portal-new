@@ -29,6 +29,7 @@ const AddJobModal = ({open, onClose, job, fetchJobs}) => {
  };
 
  useEffect(() => {
+  console.log(job);
   if (JSON.stringify(job) !== '{}') {
    setValue('title', job.title);
    setValue('description', job.description);
