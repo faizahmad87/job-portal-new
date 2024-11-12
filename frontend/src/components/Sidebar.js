@@ -50,10 +50,7 @@ const Sidebar = () => {
      <MenuIcon />
     </IconButton>
 
-    <Typography
-     variant="h6"
-     sx={{textAlign: 'left', flexGrow: 1, paddingLeft: '20%'}}
-    >
+    <Typography variant="h6" sx={{textAlign: 'left', flexGrow: 1}}>
      Admin Panel
     </Typography>
    </Box>

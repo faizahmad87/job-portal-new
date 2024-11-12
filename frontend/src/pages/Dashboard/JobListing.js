@@ -72,9 +72,9 @@ const JobListings = () => {
     flexDirection: 'column',
     alignItems: {xs: 'center', md: 'flex-start'},
     justifyContent: {xs: 'center', md: 'flex-start'},
-    padding: 2,
+    padding: 2
     // backgroundColor: '#f4f6f9', // Light background color
-    minHeight: '100vh'
+    //minHeight: '100vh'
    }}
   >
    <Typography
