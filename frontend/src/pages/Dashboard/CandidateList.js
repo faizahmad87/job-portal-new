@@ -1,5 +1,3 @@
-// src/pages/Dashboard/CandidateList.js
-
 import React, {useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {
@@ -8,7 +6,10 @@ import {
  List,
  ListItem,
  ListItemText,
- Button
+ Button,
+ Card,
+ CardContent,
+ CardActions
 } from '@mui/material';
 import {IconButton} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -36,32 +37,79 @@ const CandidateList = () => {
  };
 
  return (
-  <Box>
-   <Box sx={{display: 'flex', alignItems: 'left', padding: 0}}>
-    <IconButton onClick={() => navigate(-1)} aria-label="back">
+  <Box
+   sx={{
+    padding: 2,
+    minHeight: '100vh'
+    //backgroundColor: '#f4f6f9'
+   }}
+  >
+   <Box sx={{display: 'flex', alignItems: 'center', padding: '8px 0'}}>
+    <IconButton
+     onClick={() => navigate(-1)}
+     aria-label="back"
+     sx={{color: '#008080'}}
+    >
      <ArrowBackIcon />
     </IconButton>
-    <Typography variant="h4">Candidates for {job.job?.title}</Typography>
+    <Typography
+     variant="h4"
+     sx={{
+      fontWeight: 600,
+      color: '#008080',
+      marginLeft: 1
+     }}
+    >
+     Candidates for {job.job?.title}
+    </Typography>
    </Box>
 
    <List>
     {candidateDetails.map(candidate => (
-     <ListItem key={candidate.id}>
-      <ListItemText
-       primary={
-        <span
-         onClick={() => handleCandidateClick(candidate)}
-         style={{cursor: 'pointer'}}
-        >
-         {candidate.name}
-        </span>
+     <Card
+      key={candidate.id}
+      sx={{
+       marginBottom: 2,
+       borderRadius: 2,
+       boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+       transition: 'transform 0.2s, box-shadow 0.2s',
+       '&:hover': {
+        transform: 'scale(1.02)',
+        boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.15)'
        }
-       secondary={`Applied on: ${candidate?.appliedDate} - Status: ${candidate.status}`}
-      />
-      <Button onClick={() => handleResumePreview(candidate)} color="primary">
-       Resume Link
-      </Button>
-     </ListItem>
+      }}
+     >
+      <CardContent>
+       <ListItemText
+        primary={
+         <span
+          onClick={() => handleCandidateClick(candidate)}
+          style={{
+           cursor: 'pointer',
+           color: '#008080',
+           fontWeight: 500
+          }}
+         >
+          {candidate.name}
+         </span>
+        }
+        secondary={`Applied on: ${candidate?.appliedDate} - Status: ${candidate.status}`}
+       />
+      </CardContent>
+      <CardActions>
+       <Button
+        size="small"
+        sx={{
+         color: '#008080',
+         '&:hover': {backgroundColor: '#e0f7fa'},
+         fontWeight: 500
+        }}
+        onClick={() => handleResumePreview(candidate)}
+       >
+        Resume Link
+       </Button>
+      </CardActions>
+     </Card>
     ))}
    </List>
   </Box>

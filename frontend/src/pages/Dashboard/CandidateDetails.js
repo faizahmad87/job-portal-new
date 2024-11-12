@@ -1,5 +1,3 @@
-// src/pages/Dashboard/CandidateDetails.js
-
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {Box, Typography, Button, TextField, MenuItem} from '@mui/material';
@@ -12,6 +10,7 @@ const CandidateDetails = () => {
  const candidate = location.state?.candidate;
  const [status, setStatus] = useState(candidate?.status || 'Under Review');
  const navigate = useNavigate();
+
  const handleStatusChange = event => {
   setStatus(event.target.value);
   console.log(event.target.value);
@@ -25,46 +24,67 @@ const CandidateDetails = () => {
  useEffect(() => {
   console.log(candidate);
   setStatus(candidate.status);
- }, []);
+ }, [candidate]);
 
  return (
-  <Box>
-   <Box sx={{display: 'flex', alignItems: 'left', padding: 0}}>
-    <IconButton onClick={() => navigate(-1)} aria-label="back">
+  <Box
+   sx={{
+    padding: 3,
+    //backgroundColor: '#f4f6f9',
+    minHeight: '100vh'
+   }}
+  >
+   <Box sx={{display: 'flex', alignItems: 'center', marginBottom: 2}}>
+    <IconButton
+     onClick={() => navigate(-1)}
+     aria-label="back"
+     sx={{color: '#008080'}}
+    >
      <ArrowBackIcon />
     </IconButton>
-    <Typography variant="h4">Candidate Details: {candidate?.name}</Typography>
+    <Typography variant="h4" sx={{color: '#008080', fontWeight: 600}}>
+     Candidate Details: {candidate?.name}
+    </Typography>
    </Box>
 
-   <Typography variant="body1">Email: {candidate?.email}</Typography>
-   <Typography variant="body1">
-    Contact: {candidate?.contact_details}
+   <Typography variant="body1" sx={{color: '#555', marginBottom: 1}}>
+    <strong>Email:</strong> {candidate?.email}
    </Typography>
-   <Typography variant="body1">
-    Skills: {candidate?.skills?.join(', ') || ''}
+   <Typography variant="body1" sx={{color: '#555', marginBottom: 1}}>
+    <strong>Contact:</strong> {candidate?.contact_details}
    </Typography>
-   <Typography variant="body1">
-    Experience: {candidate?.experience} years
+   <Typography variant="body1" sx={{color: '#555', marginBottom: 1}}>
+    <strong>Skills:</strong> {candidate?.skills?.join(', ') || ''}
+   </Typography>
+   <Typography variant="body1" sx={{color: '#555', marginBottom: 2}}>
+    <strong>Experience:</strong> {candidate?.experience} years
    </Typography>
 
    <Button
     variant="contained"
-    color="primary"
-    //href={candidate?.resumeLink}
-    target="_blank"
-    sx={{mt: 2}}
+    color="success"
+    sx={{
+     mb: 2,
+     fontWeight: 500,
+     '&:hover': {backgroundColor: '#28b666'}
+    }}
     onClick={handleButtonClick}
    >
     Download Resume
    </Button>
 
-   <Box mt={4}>
+   <Box mt={4} sx={{width: '100%'}}>
     <TextField
      select
      label="Application Status"
      value={status}
      onChange={handleStatusChange}
      fullWidth
+     sx={{
+      backgroundColor: '#fff',
+      borderRadius: 1,
+      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'
+     }}
     >
      <MenuItem value="Shortlisted">Shortlisted</MenuItem>
      <MenuItem value="Interviewed">Interviewed</MenuItem>

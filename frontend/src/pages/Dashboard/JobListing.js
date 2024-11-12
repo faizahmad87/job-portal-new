@@ -17,28 +17,26 @@ const JobListings = () => {
  const [jobs, setJobs] = useState([]);
  const [candidates, setCandidates] = useState([]);
  const [isModalOpen, setModalOpen] = useState(false);
- const [selectedjob, setSelectedjob] = useState({});
+ const [selectedJob, setSelectedJob] = useState({});
  const navigate = useNavigate();
  const dispatch = useDispatch();
 
  const handleOpenModal = () => {
-  setSelectedjob({});
+  setSelectedJob({});
   setModalOpen(true);
  };
 
  const handleCloseModal = () => {
-  setSelectedjob({});
+  setSelectedJob({});
   setModalOpen(false);
  };
 
  const handleEditJob = job => {
   setModalOpen(true);
-  setSelectedjob(job.job);
-  // Add logic to populate form with job data in the modal
+  setSelectedJob(job.job);
  };
 
  const handleDeleteJob = jobId => {
-  console.log(jobId);
   deleteJob(jobId);
  };
 
@@ -49,7 +47,7 @@ const JobListings = () => {
 
  useEffect(() => {
   fetchJobs();
-  setSelectedjob({});
+  setSelectedJob({});
  }, []);
 
  const fetchJobs = async () => {
@@ -59,8 +57,6 @@ const JobListings = () => {
  };
 
  const deleteJob = async jobId => {
-  console.log(jobId);
-
   await apiCall('delete', `/jobs/${jobId}`, {});
   fetchJobs();
  };
@@ -72,17 +68,28 @@ const JobListings = () => {
     flexDirection: 'column',
     alignItems: {xs: 'center', md: 'flex-start'},
     justifyContent: {xs: 'center', md: 'flex-start'},
-    padding: 2
+    padding: 2,
+    // backgroundColor: '#f4f6f9', // Light background color
+    minHeight: '100vh'
    }}
   >
-   <Typography variant="h4" gutterBottom>
+   <Typography
+    variant="h4"
+    gutterBottom
+    sx={{color: '#008080', fontWeight: 600}}
+   >
     Dashboard - Job Listings
    </Typography>
    <Button
     variant="contained"
-    color="primary"
     onClick={handleOpenModal}
-    sx={{mb: 2}}
+    sx={{
+     mb: 3,
+     backgroundColor: '#2ECC71',
+     '&:hover': {backgroundColor: '#28b666'},
+     fontWeight: 500,
+     paddingX: 3
+    }}
    >
     Add New Job
    </Button>
@@ -91,40 +98,68 @@ const JobListings = () => {
      display: 'flex',
      flexWrap: 'wrap',
      justifyContent: {xs: 'center', md: 'flex-start'},
-     gap: 2,
+     gap: 3,
      width: '100%'
     }}
    >
     {jobs.map(job => (
      <Card
       key={job.id}
-      sx={{width: {xs: '100%', sm: '45%', md: '30%'}, marginTop: 2}}
+      sx={{
+       width: {xs: '100%', sm: '45%', md: '30%'},
+       borderRadius: 2,
+       boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+       transition: 'transform 0.2s, box-shadow 0.2s',
+       '&:hover': {
+        transform: 'scale(1.02)',
+        boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.15)'
+       }
+      }}
      >
       <CardContent>
-       <Typography variant="h5">{job.job.title}</Typography>
-       <Typography>{job.job.description}</Typography>
-       <Typography variant="caption">
+       <Typography variant="h5" sx={{color: '#008080', fontWeight: 600}}>
+        {job.job.title}
+       </Typography>
+       <Typography sx={{color: '#555', mt: 1}}>
+        {job.job.description}
+       </Typography>
+       <Typography
+        variant="caption"
+        sx={{color: '#888', mt: 1, display: 'block'}}
+       >
         Applicants: {job.candidates.length}
        </Typography>
       </CardContent>
       <CardActions>
        <Button
         size="small"
-        color="primary"
+        sx={{
+         color: '#008080',
+         '&:hover': {backgroundColor: '#e0f7fa'},
+         fontWeight: 500
+        }}
         onClick={() => handleViewCandidates(job)}
        >
         View Candidates
        </Button>
        <Button
         size="small"
-        color="secondary"
+        sx={{
+         color: '#FFA500',
+         '&:hover': {backgroundColor: '#fff5e5'},
+         fontWeight: 500
+        }}
         onClick={() => handleEditJob(job)}
        >
         Edit
        </Button>
        <Button
         size="small"
-        color="error"
+        sx={{
+         color: '#FF6347',
+         '&:hover': {backgroundColor: '#ffe5e5'},
+         fontWeight: 500
+        }}
         onClick={() => handleDeleteJob(job.job._id)}
        >
         Delete
@@ -137,7 +172,7 @@ const JobListings = () => {
     open={isModalOpen}
     onClose={handleCloseModal}
     fetchJobs={fetchJobs}
-    job={selectedjob}
+    job={selectedJob}
    />
   </Box>
  );

@@ -34,10 +34,19 @@ const NewAssessmentModal = ({open, onClose, onSubmit}) => {
      mt: {xs: '20%', sm: 5}, // Center vertically on mobile, 5 for larger screens
      display: 'flex',
      flexDirection: 'column',
-     alignItems: 'center'
+     alignItems: 'center',
+     boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.15)' // subtle shadow for floating effect
     }}
    >
-    <Typography variant="h6" align="center">
+    <Typography
+     variant="h6"
+     align="center"
+     sx={{
+      fontWeight: 600,
+      color: '#008080', // matching color from previous components
+      marginBottom: 2
+     }}
+    >
      Create New Assessment
     </Typography>
     <TextField
@@ -46,12 +55,33 @@ const NewAssessmentModal = ({open, onClose, onSubmit}) => {
      value={name}
      onChange={e => setName(e.target.value)}
      margin="normal"
+     sx={{
+      '& .MuiInputBase-root': {
+       borderRadius: '8px' // rounded corners for text field
+      },
+      '& .MuiInputLabel-root': {
+       fontWeight: 500,
+       color: '#616161' // subtle label color
+      },
+      '& .MuiInputBase-input': {
+       color: '#424242' // input text color
+      }
+     }}
     />
     <Button
      variant="contained"
      color="primary"
      onClick={handleSubmit}
-     sx={{mt: 2}}
+     sx={{
+      mt: 2,
+      backgroundColor: '#008080', // consistent with previous button colors
+      '&:hover': {
+       backgroundColor: '#00796b' // darken on hover
+      },
+      padding: '8px 16px',
+      textTransform: 'none',
+      fontWeight: 500
+     }}
     >
      Submit
     </Button>

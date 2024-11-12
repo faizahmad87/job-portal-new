@@ -108,7 +108,13 @@ const QuestionForm = ({onAdd, editingQuestion, onEdit}) => {
     variant="outlined"
     color="primary"
     onClick={handleAddOption}
-    sx={{marginTop: 1, marginBottom: 1}}
+    sx={{
+     marginTop: 1,
+     marginBottom: 1,
+     color: '#2ECC71',
+     borderColor: '#2ECC71',
+     '&:hover': {backgroundColor: '#D0FFFA'}
+    }}
    >
     Add Option
    </Button>
@@ -125,7 +131,13 @@ const QuestionForm = ({onAdd, editingQuestion, onEdit}) => {
     variant="contained"
     color="primary"
     onClick={handleSubmit}
-    sx={{marginTop: 2}}
+    sx={{
+     marginTop: 2,
+     backgroundColor: '#2ECC71',
+     '&:hover': {backgroundColor: '#28b666'},
+     fontWeight: 500,
+     paddingX: 3
+    }}
    >
     {editingQuestion ? 'Save Changes' : 'Add Question'}
    </Button>

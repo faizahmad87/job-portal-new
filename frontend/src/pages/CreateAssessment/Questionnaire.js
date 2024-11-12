@@ -82,18 +82,28 @@ const Questionnaire = () => {
  return (
   <Box sx={{padding: 3}}>
    <Box sx={{display: 'flex', alignItems: 'left', padding: 0}}>
-    <IconButton onClick={() => navigate(-1)} aria-label="back">
+    <IconButton
+     onClick={() => navigate(-1)}
+     aria-label="back"
+     sx={{color: '#008080'}}
+    >
      <ArrowBackIcon />
     </IconButton>
-    <Typography variant="h4" sx={{marginLeft: 1}}>
+    {/* <IconButton onClick={() => navigate(-1)} aria-label="back">
+     <ArrowBackIcon />
+    </IconButton> */}
+    <Typography
+     variant="h4"
+     sx={{marginLeft: 1, fontWeight: 600, color: '#008080'}}
+    >
      Edit Assessment: {assessment.assessmentName}
     </Typography>
    </Box>
    {/* <Typography variant="h4">
     Edit Assessment: {assessment.assessmentName}
    </Typography> */}
-   <Typography variant="h7">
-    selectedJob: {assessment?.job?.jobTitle}
+   <Typography variant="h7" sx={{color: '#555', mt: 1}}>
+    selected Job: {assessment?.job?.jobTitle}
    </Typography>
    <FormControl fullWidth variant="outlined" sx={{mt: 2, mb: 2}}>
     <InputLabel>Job Title</InputLabel>
@@ -107,11 +117,19 @@ const Questionnaire = () => {
    </FormControl>
 
    <Box>
-    <Typography variant="h6">Questions</Typography>
+    <Typography variant="h6" sx={{fontWeight: 600, color: '#008080', mb: 2}}>
+     Questions
+    </Typography>
     {assessment?.questions?.map((q, index) => (
      <Box
       key={index}
-      sx={{marginBottom: 2, border: '1px solid #ddd', padding: 2}}
+      //sx={{marginBottom: 2, border: '1px solid #ddd', padding: 2}}
+      sx={{
+       marginBottom: 2,
+       borderRadius: 2,
+       padding: 2,
+       boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)'
+      }}
      >
       <Typography>
        Q{index + 1}: {q.question}
@@ -123,7 +141,18 @@ const Questionnaire = () => {
         </div>
        );
       })}
-      <Button onClick={() => handleEditQuestion(q, index)}>Edit</Button>
+      <Button
+       variant="outlined"
+       sx={{
+        marginTop: '4px',
+        color: '#FFA500',
+        borderColor: '#FFA500',
+        '&:hover': {backgroundColor: '#fff5e5'}
+       }}
+       onClick={() => handleEditQuestion(q, index)}
+      >
+       Edit
+      </Button>
       {/* <Button onClick={() => handleDeleteQuestion(index)}>Delete</Button> */}
 
       {editOpen === true && (
@@ -180,39 +209,19 @@ const Questionnaire = () => {
       ];
       updateAssessment(jobID, currentQuestion);
      }}
-     //  editingQuestion={editingQuestion} // Pass the editing question to the form
-     //  onEdit={updatedQuestion => {
-     //   const updatedQuestions = assessment?.questions.map(q =>
-     //    q === editingQuestion ? updatedQuestion : q
-     //   );
-     //   console.log(updatedQuestions);
-     //   if (Array.isArray(updatedQuestions)) {
-     //    updatedQuestions.forEach(question => {
-     //     // Check if options is an array of objects (which is the case for the last question)
-     //     if (
-     //      Array.isArray(question.options) &&
-     //      typeof question.options[0] === 'object'
-     //     ) {
-     //      question.options = question.options.map(option => option.text); // Convert to an array of strings
-     //      question.correctAnswer = question.correctOption; // Rename correctOption to correctAnswer
-     //      delete question.correctOption; // Remove the old correctOption key
-     //     }
-     //    });
-     //   } else {
-     //    console.error('updatedQuestion is not an array');
-     //   }
-     //   console.log(updatedQuestions);
-
-     //   updateAssessment(jobID, updatedQuestions);
-     //   setEditingQuestion(null); // Reset the editing state
-     //  }}
     />
    </Box>
 
    <Button
     onClick={handleSaveAssessment}
     variant="contained"
-    sx={{marginTop: 2}}
+    sx={{
+     marginTop: 2,
+     backgroundColor: '#2ECC71',
+     '&:hover': {backgroundColor: '#28b666'},
+     fontWeight: 500,
+     paddingX: 3
+    }}
    >
     Save Assessment
    </Button>

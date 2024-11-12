@@ -33,6 +33,7 @@ function App() {
       marginTop: {xs: '48px', sm: '12px'}, // 56px margin-top for mobile screens
       padding: 3,
       flexGrow: 1
+      //backgroundColor: '#f4f6f9' // Light background color
      }}
     >
      <Routes>

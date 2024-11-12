@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useForm} from 'react-hook-form';
-import {Modal, Box, TextField, Button} from '@mui/material';
+import {Modal, Box, TextField, Button, Typography} from '@mui/material';
 import apiCall from '../../utils/api';
 
 const AddJobModal = ({open, onClose, job, fetchJobs}) => {
@@ -9,28 +9,20 @@ const AddJobModal = ({open, onClose, job, fetchJobs}) => {
  const {register, handleSubmit, setValue} = useForm();
 
  const createJob = async (title, description) => {
-  console.log(title, description);
-  const response = await apiCall('post', '/jobs', {
-   title,
-   description
-  });
-  console.log(response);
+  const response = await apiCall('post', '/jobs', {title, description});
   fetchJobs();
  };
 
  const editJob = async (title, description) => {
-  console.log(title, description);
   const response = await apiCall('put', `/jobs/${job._id}`, {
    title,
    description
   });
-  console.log(response);
   fetchJobs();
  };
 
  useEffect(() => {
-  console.log(job);
-  if (JSON.stringify(job) !== '{}') {
+  if (job && JSON.stringify(job) !== '{}') {
    setValue('title', job.title);
    setValue('description', job.description);
   } else {
@@ -40,15 +32,13 @@ const AddJobModal = ({open, onClose, job, fetchJobs}) => {
  }, [job]);
 
  const handleSubmit2 = async data => {
-  if (JSON.stringify(job) !== '{}') {
-   // Update existing job (API call)
+  if (job && JSON.stringify(job) !== '{}') {
    editJob(data.title, data.description);
   } else {
-   // Add new job (API call)
    createJob(data.title, data.description);
   }
   onClose();
-  fetchJobs(); // Refresh the job list after adding/editing
+  fetchJobs();
  };
 
  return (
@@ -59,31 +49,71 @@ const AddJobModal = ({open, onClose, job, fetchJobs}) => {
      backgroundColor: 'white',
      borderRadius: 2,
      margin: 'auto',
-     width: {xs: '80%', sm: 400}, // 80% width for mobile, 400px for larger screens
-     maxWidth: 600, // max width for larger screens
-     mt: {xs: '20%', sm: 5}, // Center vertically on mobile, 5 for larger screens
+     width: {xs: '80%', sm: '80%', md: 500},
+     maxWidth: 600,
+     mt: {xs: '20%', sm: '10%'},
+     boxShadow: 24,
      display: 'flex',
      flexDirection: 'column',
-     alignItems: 'center'
+     alignItems: 'center',
+     position: 'relative'
     }}
    >
-    <h2>{job ? 'Edit Job' : 'Add New Job'}</h2>
+    <Typography
+     variant="h5"
+     color="primary"
+     sx={{mb: 2, color: '#008080', fontWeight: 'bold'}}
+    >
+     {job && JSON.stringify(job) !== '{}' ? 'Edit Job' : 'Add New Job'}
+    </Typography>
     <form onSubmit={handleSubmit(handleSubmit2)} style={{width: '100%'}}>
      <TextField
       label="Job Title"
       fullWidth
+      variant="outlined"
       {...register('title', {required: true})}
       margin="normal"
+      sx={{
+       backgroundColor: '#f9f9f9',
+       borderRadius: 1
+      }}
      />
      <TextField
       label="Job Description"
       fullWidth
+      variant="outlined"
       {...register('description', {required: true})}
       margin="normal"
+      sx={{
+       backgroundColor: '#f9f9f9',
+       borderRadius: 1
+      }}
      />
-     <Button variant="contained" color="primary" type="submit" sx={{mt: 2}}>
-      {job ? 'Save Changes' : 'Add Job'}
-     </Button>
+     <Box display="flex" justifyContent="flex-end" sx={{mt: 2}}>
+      <Button
+       onClick={onClose}
+       sx={{
+        color: '#555',
+        backgroundColor: '#e0e0e0',
+        mr: 2,
+        '&:hover': {backgroundColor: '#c0c0c0'}
+       }}
+      >
+       Cancel
+      </Button>
+      <Button
+       variant="contained"
+       color="primary"
+       type="submit"
+       sx={{
+        backgroundColor: '#2ECC71',
+        color: 'white',
+        '&:hover': {backgroundColor: '#28B463'}
+       }}
+      >
+       {job && JSON.stringify(job) !== '{}' ? 'Save Changes' : 'Add Job'}
+      </Button>
+     </Box>
     </form>
    </Box>
   </Modal>
