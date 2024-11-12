@@ -5,10 +5,12 @@ import NewAssessmentModal from '../../components/NewAssessmentModal';
 import {useNavigate} from 'react-router-dom';
 import apiCall from '../../utils/api';
 import {useSelector} from 'react-redux';
+import CircularLoader from '../../components/CircularLoader';
 
 const AssessmentList = () => {
  const [assessments, setAssessments] = useState([]);
  const [showModal, setShowModal] = useState(false);
+ const [isLoading, setIsLoading] = useState(false);
  const navigate = useNavigate();
  const toggleFetchAssessment = useSelector(
   state => state.toggleFetchAssessment
@@ -19,7 +21,9 @@ const AssessmentList = () => {
  };
 
  const getAssessments = async () => {
+  setIsLoading(true);
   const response = await apiCall('get', '/assessments', {});
+  setIsLoading(false);
   console.log(response);
   setAssessments(response);
  };
@@ -58,6 +62,8 @@ const AssessmentList = () => {
    </Box>
 
    <Grid container spacing={3} mt={2}>
+    {isLoading && <CircularLoader />}
+
     {assessments.map(assessment => (
      <Grid item xs={12} sm={6} md={4} key={assessment._id}>
       <AssessmentCard

@@ -12,6 +12,7 @@ import AddJobModal from './AddJobModal';
 import apiCall from '../../utils/api';
 import {useDispatch} from 'react-redux';
 import {setCandidateDetails} from '../../redux/actions';
+import CircularLoader from '../../components/CircularLoader';
 
 const JobListings = () => {
  const [jobs, setJobs] = useState([]);
@@ -20,6 +21,7 @@ const JobListings = () => {
  const [selectedJob, setSelectedJob] = useState({});
  const navigate = useNavigate();
  const dispatch = useDispatch();
+ const [isLoading, setIsLoading] = useState(false);
 
  const handleOpenModal = () => {
   setSelectedJob({});
@@ -51,7 +53,9 @@ const JobListings = () => {
  }, []);
 
  const fetchJobs = async () => {
+  setIsLoading(true);
   const response = await apiCall('get', '/jobs', {});
+  setIsLoading(false);
   setJobs(response);
   setCandidates(response);
  };
@@ -102,6 +106,7 @@ const JobListings = () => {
      width: '100%'
     }}
    >
+    {isLoading && <CircularLoader />}
     {jobs.map(job => (
      <Card
       key={job.id}
