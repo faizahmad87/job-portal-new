@@ -8,11 +8,7 @@ require('dotenv').config();
 
 const app = express();
 //dealing with cors errors
-app.use(
- cors({
-  origin: "https://job-portal-6vzx.vercel.app"
- })
-);
+
 
 
 
@@ -22,6 +18,12 @@ connectDB();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+app.use(
+ cors({
+  origin: "https://job-portal-6vzx.vercel.app"
+ })
+);
 
 // Routes
 
