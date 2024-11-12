@@ -21,7 +21,7 @@ app.use(express.json());
 
 app.use(
  cors({
-  origin: "https://job-portal-6vzx.vercel.app"
+  origin: '*'
  })
 );
 
